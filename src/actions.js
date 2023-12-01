@@ -50,11 +50,11 @@ module.exports = function (self) {
 						self.log('warn', `an invalid src varible has been passed: ${src} `)
 						return undefined
 					}
-					cmd += src + addrSep + addrCmd.xpoint
+					cmd += src + addrSep + addrCmd.xpt
 				} else if (options.method == control.reqReset) {
-					cmd = SOM + control.reqSet + appTag.crosspoint + dst + paramSep + '0' + addrSep + addrCmd.xpoint
+					cmd = SOM + control.reqSet + appTag.crosspoint + dst + paramSep + '0' + addrSep + addrCmd.xpt
 				} else {
-					cmd = SOM + control.reqInterrogate + appTag.crosspoint + dst + paramSep + nullParam + addrSep + addrCmd.xpoint
+					cmd = SOM + control.reqInterrogate + appTag.crosspoint + dst + paramSep + nullParam + addrSep + addrCmd.xpt
 				}
 				self.addCmdtoQueue(cmd)
 			},
@@ -77,7 +77,7 @@ module.exports = function (self) {
 					self.log('warn', `an invalid varible has been passed: ${dst}`)
 					return undefined
 				}
-				cmd += dst + paramSep + nullParam + addrSep + addrCmd.xpoint
+				cmd += dst + paramSep + nullParam + addrSep + addrCmd.xpt
 				self.addCmdtoQueue(cmd)
 			},
 		},
