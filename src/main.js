@@ -23,15 +23,15 @@ class NTP_DOT_PROTOCOL extends InstanceBase {
 		this.updateStatus('Starting')
 		this.config = config
 		this.useSecondary = false
+		this.cmdTimer = setTimeout(() => {
+			this.processCmdQueue()
+		}, msgDelay)
+		this.initTCP()
 		this.initVariables()
 		this.updateActions() // export actions
 		this.updateFeedbacks() // export feedbacks
 		this.updateVariableDefinitions() // export variable definitions
 		this.updateVariableValues()
-		this.initTCP()
-		this.cmdTimer = setTimeout(() => {
-			this.processCmdQueue()
-		}, msgDelay)
 	}
 	// When module gets deleted
 	async destroy() {
