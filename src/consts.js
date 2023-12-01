@@ -35,3 +35,9 @@ export const appTag = {
 	alarm: 'A',
 	crosspoint: 'C',
 }
+export const addrCmd = {
+	delay: 'DELAY',
+	gain: 'GAIN',
+	p48: 'P48',
+	xpt: 'XPOINT',
+}
