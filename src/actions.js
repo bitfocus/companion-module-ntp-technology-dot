@@ -1,5 +1,5 @@
 //const { Regex } = require('@companion-module/base')
-const { paramSep, addrSep, nullParam, SOM, control, appTag } = require('./consts.js')
+const { paramSep, addrSep, nullParam, SOM, control, appTag, addrCmd } = require('./consts.js')
 
 module.exports = function (self) {
 	self.setActionDefinitions({
@@ -28,14 +28,6 @@ module.exports = function (self) {
 					tooltip: 'Varible must return an integer channel number',
 				},
 				{
-					id: 'addr',
-					type: 'textinput',
-					label: 'Address',
-					default: self.config.address,
-					useVariables: true,
-					tooltip: 'Varible must return an string of 0 to 6 characters',
-				},
-				{
 					id: 'method',
 					type: 'dropdown',
 					label: 'Method',
@@ -46,7 +38,6 @@ module.exports = function (self) {
 			],
 			callback: async ({ options }) => {
 				let dst = parseInt(await self.parseVariablesInString(options.dst))
-				let addr = self.regexAddress(await self.parseVariablesInString(options.addr))
 				let cmd = ''
 				if (isNaN(dst) || dst > self.config.destinations) {
 					self.log('warn', `an invalid dst varible has been passed: ${dst}`)
@@ -61,9 +52,9 @@ module.exports = function (self) {
 					}
 					cmd += src + addrSep + addr
 				} else if (options.method == control.reqReset) {
-					cmd = SOM + control.reqSet + appTag.crosspoint + dst + paramSep + '0' + addrSep + addr
+					cmd = SOM + control.reqSet + appTag.crosspoint + dst + paramSep + '0' + addrSep + addrCmd.xpoint
 				} else {
-					cmd = SOM + control.reqInterrogate + appTag.crosspoint + dst + paramSep + nullParam + addrSep + addr
+					cmd = SOM + control.reqInterrogate + appTag.crosspoint + dst + paramSep + nullParam + addrSep + addrCmd.xpoint as
 				}
 				self.addCmdtoQueue(cmd)
 			},
