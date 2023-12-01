@@ -74,14 +74,6 @@ module.exports = {
 				range: true,
 				step: 1,
 			},
-			{
-				type: 'textinput',
-				id: 'address',
-				label: 'Default Address',
-				default: '',
-				width: 4,
-				regex: '/^.{0,6}[^.*,`"]$/',
-			},
 		]
 	},
 }
