@@ -3,9 +3,9 @@ const { paramSep, addrSep, nullParam, SOM, control, appTag, addrCmd } = require(
 
 module.exports = function (self) {
 	self.setActionDefinitions({
-		crosspoint_set: {
-			name: 'Crosspoint - Set',
-			description: 'Set a crosspoint connection',
+		crosspoint: {
+			name: 'Crosspoint',
+			description: 'Set, reset or interrogate a crosspoint connection',
 			options: [
 				{
 					id: 'src',
@@ -15,7 +15,7 @@ module.exports = function (self) {
 					choices: self.sources,
 					useVariables: true,
 					allowCustom: true,
-					tooltip: 'Varible must return an integer channel number',
+					tooltip: 'Varible must return an integer src number',
 				},
 				{
 					id: 'dst',
@@ -25,7 +25,7 @@ module.exports = function (self) {
 					choices: self.destinations,
 					useVariables: true,
 					allowCustom: true,
-					tooltip: 'Varible must return an integer channel number',
+					tooltip: 'Varible must return an integer dst number',
 				},
 				{
 					id: 'method',
@@ -50,11 +50,11 @@ module.exports = function (self) {
 						self.log('warn', `an invalid src varible has been passed: ${src} `)
 						return undefined
 					}
-					cmd += src + addrSep + addr
+					cmd += src + addrSep + addrCmd.xpoint
 				} else if (options.method == control.reqReset) {
 					cmd = SOM + control.reqSet + appTag.crosspoint + dst + paramSep + '0' + addrSep + addrCmd.xpoint
 				} else {
-					cmd = SOM + control.reqInterrogate + appTag.crosspoint + dst + paramSep + nullParam + addrSep + addrCmd.xpoint as
+					cmd = SOM + control.reqInterrogate + appTag.crosspoint + dst + paramSep + nullParam + addrSep + addrCmd.xpoint
 				}
 				self.addCmdtoQueue(cmd)
 			},
@@ -77,7 +77,7 @@ module.exports = function (self) {
 					self.log('warn', `an invalid varible has been passed: ${dst}`)
 					return undefined
 				}
-				cmd += dst + paramSep + nullParam
+				cmd += dst + paramSep + nullParam + addrSep + addrCmd.xpoint
 				self.addCmdtoQueue(cmd)
 			},
 		},
