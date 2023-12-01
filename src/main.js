@@ -1,0 +1,85 @@
+const { InstanceBase, runEntrypoint, InstanceStatus } = require('@companion-module/base')
+const UpgradeScripts = require('./upgrades.js')
+const UpdateActions = require('./actions.js')
+const UpdateFeedbacks = require('./feedbacks.js')
+const UpdateVariableDefinitions = require('./variables.js')
+const config = require('./config.js')
+const choices = require('./choices.js')
+const util = require('./util.js')
+const tcp = require('./tcp.js')
+const processCmd = require('./processcmd.js')
+const { EndSession, msgDelay } = require('./consts.js')
+
+class NTP_DOT_PROTOCOL extends InstanceBase {
+	constructor(internal) {
+		super(internal)
+		Object.assign(this, { ...config, ...util, ...tcp, ...processCmd, ...choices })
+		this.keepAliveTimer = {}
+		this.cmdTimer = {}
+		this.cmdQueue = []
+		this.clearToTx = true
+	}
+	async init(config) {
+		this.updateStatus('Starting')
+		this.config = config
+		this.useSecondary = false
+		this.initVariables()
+		this.updateActions() // export actions
+		this.updateFeedbacks() // export feedbacks
+		this.updateVariableDefinitions() // export variable definitions
+		this.updateVariableValues()
+		this.initTCP()
+		this.cmdTimer = setTimeout(() => {
+			this.processCmdQueue()
+		}, msgDelay)
+	}
+	// When module gets deleted
+	async destroy() {
+		this.log('debug', `destroy. ID: ${this.id}`)
+		clearTimeout(this.keepAliveTimer)
+		clearTimeout(this.cmdTimer)
+		this.keepAliveTimer = null
+		this.cmdTimer = null
+		if (this.socket) {
+			await this.sendCommand(EndSession)
+			this.socket.destroy()
+		} else {
+			this.updateStatus(InstanceStatus.Disconnected)
+		}
+	}
+
+	updateVariableValues() {
+		let varList = []
+		for (let i = 0; i <= this.config.destinations; i++) {
+			varList[`dst${i}`] = 'unknown'
+		}
+		this.setVariableValues(varList)
+	}
+
+	initVariables() {
+		this.sources = [{ id: 0, label: 'No Source' }]
+		this.destinations = []
+		this.connections = []
+		for (let i = 1; i <= this.config.sources; i++) {
+			this.sources.push({ id: i, label: `Source ${i}` })
+		}
+		for (let i = 1; i <= this.config.destinations; i++) {
+			this.destinations.push({ id: i, label: `Destination ${i}` })
+			this.connections[i] = 0
+		}
+	}
+
+	updateActions() {
+		UpdateActions(this)
+	}
+
+	updateFeedbacks() {
+		UpdateFeedbacks(this)
+	}
+
+	updateVariableDefinitions() {
+		UpdateVariableDefinitions(this)
+	}
+}
+
+runEntrypoint(NTP_DOT_PROTOCOL, UpgradeScripts)
