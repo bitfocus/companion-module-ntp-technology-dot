@@ -3,7 +3,7 @@
 	"name": "ntp-dot-protocol",
 	"shortname": "DOT Protocol",
 	"description": "NTP DOT Protocol for control of audio routers with Bitfocus Companion",
-	"version": "0.8.0",
+	"version": "1.0.0",
 	"license": "MIT",
 	"repository": "git+https://github.com/phillipivan/companion-module-ntp-dot-protocol.git",
 	"bugs": "https://github.com/phillipivan/companion-module-ntp-dot-protocol/issues",
@@ -21,6 +21,6 @@
 	},
 	"legacyIds": [],
 	"manufacturer": "NTP Technology",
-	"products": ["635", "600 Series", "Penta Series"],
+	"products": ["635-800A", "600 Series", "Penta Series"],
 	"keywords": ["Hardware", "Audio", "Router", "Dante"]
 }
