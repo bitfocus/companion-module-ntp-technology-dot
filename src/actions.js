@@ -20,7 +20,7 @@ module.exports = function (self) {
 				{
 					id: 'src',
 					type: 'dropdown',
-					label: 'sources',
+					label: 'Source',
 					default: 1,
 					choices: self.sources,
 					useVariables: true,
@@ -94,7 +94,7 @@ module.exports = function (self) {
 				{
 					id: 'src',
 					type: 'dropdown',
-					label: 'sources',
+					label: 'Source',
 					default: 1,
 					choices: self.sources,
 					useVariables: true,
@@ -130,7 +130,7 @@ module.exports = function (self) {
 				{
 					id: 'src',
 					type: 'dropdown',
-					label: 'sources',
+					label: 'Source',
 					default: 1,
 					choices: self.sources,
 					useVariables: true,
@@ -164,7 +164,7 @@ module.exports = function (self) {
 				{
 					id: 'src',
 					type: 'dropdown',
-					label: 'sources',
+					label: 'Source',
 					default: 1,
 					choices: self.sources,
 					useVariables: true,
