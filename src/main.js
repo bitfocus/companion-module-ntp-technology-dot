@@ -60,12 +60,16 @@ class NTP_DOT_PROTOCOL extends InstanceBase {
 		this.sources = [{ id: 0, label: 'No Source' }]
 		this.destinations = []
 		this.connections = []
+		this.alarms = []
 		for (let i = 1; i <= this.config.sources; i++) {
 			this.sources.push({ id: i, label: `Source ${i}` })
 		}
 		for (let i = 1; i <= this.config.destinations; i++) {
 			this.destinations.push({ id: i, label: `Destination ${i}` })
 			this.connections[i] = 0
+		}
+		for (let i = 1; i <= this.config.alarms; i++) {
+			this.alarms[i] = false
 		}
 	}
 

@@ -40,5 +40,33 @@ module.exports = async function (self) {
 				self.addCmdtoQueue(SOM + control.notifySet + appTag.crosspoint + options.dst + paramSep + options.src)
 			},
 		},
+		alarm: {
+			name: 'Alarm',
+			type: 'boolean',
+			label: 'Alarm',
+			defaultStyle: {
+				bgcolor: combineRgb(255, 0, 0),
+				color: combineRgb(0, 0, 0),
+			},
+			options: [
+				{
+					id: 'alarm',
+					type: 'number',
+					label: 'Alarm',
+					default: 1,
+					min: 1,
+					max: self.config.alarms,
+					range: true,
+					step: 1,
+				},
+			],
+			callback: ({ options }) => {
+				if (self.alarms[options.alarm]) {
+					return true
+				} else {
+					return false
+				}
+			},
+		},
 	})
 }

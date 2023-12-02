@@ -80,6 +80,7 @@ module.exports = {
 							default:
 								//assume crosspoint connect unless address indicates otherwise
 								this.log('info', `source.gain.ackReset: ${reply}`)
+								this.updateFeedbacks('checkCrosspoint')
 						}
 						break
 					default:
@@ -123,6 +124,7 @@ module.exports = {
 				switch (tag) {
 					case appTag.alarm:
 						this.log('warn', `alarm.faultSet: ${reply}`)
+						this.updateFeedbacks('alarm')
 						break
 					case appTag.alive:
 						this.log('warn', `alive.faultSet: ${reply}`)
@@ -153,6 +155,7 @@ module.exports = {
 				switch (tag) {
 					case appTag.alarm:
 						this.log('warn', `alarm.faultReset: ${reply}`)
+						this.updateFeedbacks('alarm')
 						break
 					case appTag.alive:
 						this.log('warn', `alive.faultReset: ${reply}`)

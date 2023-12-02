@@ -10,6 +10,8 @@ In the case of redundant router controllers, enter the secondary controller IP a
 
 Configure the Source and Destination count, this should be equal to highest number used for each. The system will limit values entered to the specified range.
 
+The alarms should match the number of configured alarm indexs in your system.
+
 ## Actions
 
 - **Crosspoint** Set, Remove or Interrogate a crosspoint
@@ -22,6 +24,7 @@ Configure the Source and Destination count, this should be equal to highest numb
 - **Destination - Source** The source routed to a given destination
 
 ## Feedbacks
+- **Alarm** True if the alarm index is asserted
 - **Crosspoint** True if the specified crosspoint is connected
 
 ## Version History

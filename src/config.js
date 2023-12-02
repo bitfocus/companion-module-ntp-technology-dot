@@ -6,6 +6,7 @@ module.exports = {
 		this.config = config
 		this.useSecondary = false
 		this.initTCP()
+		this.initVariables()
 		this.updateActions()
 		this.updateFeedbacks()
 		this.updateVariableDefinitions()
@@ -68,6 +69,17 @@ module.exports = {
 				id: 'destinations',
 				label: 'Destinations',
 				default: 256,
+				width: 4,
+				min: 1,
+				max: 9999,
+				range: true,
+				step: 1,
+			},
+			{
+				type: 'number',
+				id: 'alarms',
+				label: 'Alarms',
+				default: 24,
 				width: 4,
 				min: 1,
 				max: 9999,
