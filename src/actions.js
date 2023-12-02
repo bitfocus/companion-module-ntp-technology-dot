@@ -8,16 +8,6 @@ module.exports = function (self) {
 			description: 'Set, reset or interrogate a crosspoint connection',
 			options: [
 				{
-					id: 'src',
-					type: 'dropdown',
-					label: 'sources',
-					default: 1,
-					choices: self.sources,
-					useVariables: true,
-					allowCustom: true,
-					tooltip: 'Varible must return an integer src number',
-				},
-				{
 					id: 'dst',
 					type: 'dropdown',
 					label: 'Destination',
@@ -26,6 +16,16 @@ module.exports = function (self) {
 					useVariables: true,
 					allowCustom: true,
 					tooltip: 'Varible must return an integer dst number',
+				},
+				{
+					id: 'src',
+					type: 'dropdown',
+					label: 'sources',
+					default: 1,
+					choices: self.sources,
+					useVariables: true,
+					allowCustom: true,
+					tooltip: 'Varible must return an integer src number',
 				},
 				{
 					id: 'method',
@@ -85,6 +85,111 @@ module.exports = function (self) {
 					return undefined
 				}
 				self.addCmdtoQueue(SOM + control.notifySet + appTag.crosspoint + dst + paramSep + src)
+			},
+		},
+		source_gain: {
+			name: 'Input - Gain',
+			description: 'Microphone Gain',
+			options: [
+				{
+					id: 'src',
+					type: 'dropdown',
+					label: 'sources',
+					default: 1,
+					choices: self.sources,
+					useVariables: true,
+					allowCustom: true,
+					tooltip: 'Varible must return an integer src number',
+				},
+				{
+					id: 'gain',
+					type: 'dropdown',
+					label: 'Gain',
+					default: 1,
+					choices: self.crosspoint_gain,
+					useVariables: true,
+					allowCustom: true,
+					tooltip: 'Varible must return an integer gain number between 0 and 7',
+				},
+			],
+			callback: async ({ options }) => {
+				let src = parseInt(await self.parseVariablesInString(options.src))
+				let gain = parseInt(await self.parseVariablesInString(options.gain))
+				if (isNaN(src) || src > self.config.sources || isNaN(gain || gain < 0 || gain > 7)) {
+					self.log('warn', `an invalid varible has been passed: src: ${src} gain: ${gain}`)
+					return undefined
+				}
+				let cmd = SOM + control.reqGainSet + appTag.crosspoint + src + paramSep + options.gain + addrSep + addrCmd.gain
+				self.addCmdtoQueue(cmd)
+			},
+		},
+		source_p48: {
+			name: 'Input - P48',
+			description: 'Microphone Phantom Power',
+			options: [
+				{
+					id: 'src',
+					type: 'dropdown',
+					label: 'sources',
+					default: 1,
+					choices: self.sources,
+					useVariables: true,
+					allowCustom: true,
+					tooltip: 'Varible must return an integer src number',
+				},
+				{
+					id: 'p48',
+					type: 'dropdown',
+					label: 'Phantom Power',
+					default: 0,
+					choices: self.crosspoint_p48,
+					useVariables: false,
+					allowCustom: false,
+				},
+			],
+			callback: async ({ options }) => {
+				let src = parseInt(await self.parseVariablesInString(options.src))
+				if (isNaN(src) || src > self.config.sources || src < 1) {
+					self.log('warn', `an invalid varible has been passed: src: ${src}`)
+					return undefined
+				}
+				let cmd = SOM + control.reqP48Set + appTag.crosspoint + src + paramSep + options.p48 + addrSep + addrCmd.p48
+				self.addCmdtoQueue(cmd)
+			},
+		},
+		source_delay: {
+			name: 'Input - Delay',
+			description: 'Input Delay',
+			options: [
+				{
+					id: 'src',
+					type: 'dropdown',
+					label: 'sources',
+					default: 1,
+					choices: self.sources,
+					useVariables: true,
+					allowCustom: true,
+					tooltip: 'Varible must return an integer src number',
+				},
+				{
+					id: 'delay',
+					type: 'number',
+					label: 'Delay (ms)',
+					default: 0,
+					min: 0,
+					max: 1000,
+					range: true,
+					step: 1,
+				},
+			],
+			callback: async ({ options }) => {
+				let src = parseInt(await self.parseVariablesInString(options.src))
+				if (isNaN(src) || src > self.config.sources || src < 1) {
+					self.log('warn', `an invalid varible has been passed: src: ${src}`)
+					return undefined
+				}
+				let cmd = SOM + control.reqDlySet + appTag.crosspoint + src + paramSep + options.delay + addrSep + addrCmd.delay
+				self.addCmdtoQueue(cmd)
 			},
 		},
 	})

@@ -10,7 +10,7 @@ module.exports = {
 		{ id: 6, label: '60dB' },
 		{ id: 7, label: '70dB' },
 	],
-	crosspoint_P48: [
+	crosspoint_p48: [
 		{ id: 0, label: 'OFF' },
 		{ id: 1, label: 'ON' },
 	],

@@ -13,18 +13,18 @@ module.exports = async function (self) {
 			},
 			options: [
 				{
-					id: 'src',
-					type: 'dropdown',
-					label: 'sources',
-					default: 1,
-					choices: self.sources,
-				},
-				{
 					id: 'dst',
 					type: 'dropdown',
 					label: 'Destination',
 					default: 1,
 					choices: self.destinations,
+				},
+				{
+					id: 'src',
+					type: 'dropdown',
+					label: 'Source',
+					default: 1,
+					choices: self.sources,
 				},
 			],
 			callback: ({ options }) => {

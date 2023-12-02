@@ -14,6 +14,10 @@ Configure the Source and Destination count, this should be equal to highest numb
 
 - **Crosspoint** Set, Remove or Interrogate a crosspoint
 
+- **Input - Delay** Set input delay
+- **Input - Gain** Set input gain
+- **Input - P48** Set input phantom power
+
 ## Variables
 - **Destination - Source** The source routed to a given destination
 
