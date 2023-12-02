@@ -4,9 +4,9 @@ const { paramSep, nullParam, SOM, control, appTag } = require('./consts.js')
 module.exports = async function (self) {
 	self.setFeedbackDefinitions({
 		checkCrosspoint: {
-			name: 'Check Crosspoint',
+			name: 'Crosspoint',
 			type: 'boolean',
-			label: 'Check Crosspoint',
+			label: 'Crosspoint',
 			defaultStyle: {
 				bgcolor: combineRgb(255, 0, 0),
 				color: combineRgb(0, 0, 0),
@@ -37,6 +37,7 @@ module.exports = async function (self) {
 			subscribe: async ({ options }) => {
 				let cmd = SOM + control.reqInterrogate + appTag.crosspoint + options.dst + paramSep + nullParam
 				self.addCmdtoQueue(cmd)
+				self.addCmdtoQueue(SOM + control.notifySet + appTag.crosspoint + options.dst + paramSep + options.src)
 			},
 		},
 	})

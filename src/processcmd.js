@@ -1,4 +1,4 @@
-const { paramSep, addrSep, SOM, control, appTag } = require('./consts.js')
+const { paramSep, addrSep, SOM, control, appTag, addrCmd } = require('./consts.js')
 
 module.exports = {
 	async processCmd(chunk) {
@@ -7,73 +7,265 @@ module.exports = {
 		while (reply[0] != SOM) {
 			reply = reply.slice(1)
 		}
+		reply = reply.split(addrSep)
+		let address = reply[1] === undefined ? 'NONE' : reply[1]
+		reply = reply[0]
 		let ctrl = reply[1]
 		let tag = reply[2]
 		let params = reply.slice(3)
 		params = params.split(paramSep)
 		let src = parseInt(params[1])
 		let dst = parseInt(params[0])
-		let address = params[params.length - 1].split(addrSep)
-		address = address[1].toString()
 		this.log('debug', `control ${ctrl} tag ${tag} param 1 ${params[0]} param 2 ${params[1]} address ${address}`)
-		if (ctrl == control.errSyntax) {
-			this.log('warn', 'Unit Responded Syntax Error')
-			return undefined
-		}
-		switch (tag) {
-			case appTag.alive:
-				switch (ctrl) {
-					case control.notificationReply:
-						this.log('debug', `alive.notificationReply: ${reply}`)
+		switch (ctrl) {
+			case control.ackSet:
+				switch (tag) {
+					case appTag.alarm:
+						this.log('info', `alarm.ackSet: ${reply}`)
 						break
-					case control.notifySet:
-						this.log('debug', `alive.notifySet: ${reply}`)
+					case appTag.alive:
+						this.log('info', `alive.ackSet: ${reply}`)
 						break
-					default:
-						this.log('warn', `Unexpected response from unit: ${reply}`)
-				}
-				break
-			case appTag.alarm:
-				switch (ctrl) {
-					case control.notificationReply:
-						this.log('debug', `alarm.notificationReply: ${reply}`)
-						break
-					case control.notifySet:
-						this.log('debug', `alarm.notifySet: ${reply}`)
-						break
-					default:
-						this.log('warn', `Unexpected response from unit: ${reply}`)
-				}
-				break
-			case appTag.crosspoint:
-				switch (ctrl) {
-					case control.ackSet:
-						if (isNaN(src) || isNaN(dst)) {
-							this.log('warn', `unexpected reply: ${reply} src: ${src} dst: ${dst}`)
-							return undefined
+					case appTag.crosspoint:
+						switch (address) {
+							case addrCmd.delay:
+								this.log('info', `crosspoint.delay.ackSet: ${reply}`)
+								break
+							case addrCmd.gain:
+								this.log('info', `source.gain.ackSet: ${reply}`)
+								break
+							case addrCmd.p48:
+								this.log('info', `source.p48.ackSet: ${reply}`)
+								break
+							case addrCmd.xpt:
+							case addrCmd.none:
+							default:
+								//assume crosspoint connect unless address indicates otherwise
+								this.log('info', `source.gain.ackSet: ${reply}`)
+								if (isNaN(src) || isNaN(dst)) {
+									this.log('warn', `unexpected reply: ${reply} src: ${src} dst: ${dst}`)
+									return undefined
+								}
+								this.connections[dst] = src
+								varList[`dst${dst}`] = src
 						}
-						this.connections[dst] = src
-						varList[`dst${dst}`] = src
 						this.setVariableValues(varList)
 						this.updateFeedbacks('checkCrosspoint')
 						break
-					case control.faultSet:
-						this.log('warn', `crosspoint.faultSet: ${reply}`)
+					default:
+						this.log('warn', `Unexpected response from unit: ${reply}`)
+				}
+				break
+			case control.ackReset:
+				switch (tag) {
+					case appTag.alarm:
+						this.log('info', `alarm.ackReset: ${reply}`)
 						break
-					case control.ackReset:
-						this.log('info', `crosspoint.ackReset: ${reply}`)
+					case appTag.alive:
+						this.log('info', `alive.ackReset: ${reply}`)
 						break
-					case control.faultReset:
-						this.log('warn', `crosspoint.faultReset: ${reply}`)
-						break
-					case control.notificationReply:
-						this.log('info', `crosspoint.notificationReply: ${reply}`)
-						break
-					case control.invalidParam:
-						this.log('warn', `crosspoint.invalidParam: ${reply}`)
+					case appTag.crosspoint:
+						switch (address) {
+							case addrCmd.delay:
+								this.log('info', `crosspoint.delay.ackReset: ${reply}`)
+								break
+							case addrCmd.gain:
+								this.log('info', `source.gain.ackReset: ${reply}`)
+								break
+							case addrCmd.p48:
+								this.log('info', `source.p48.ackReset: ${reply}`)
+								break
+							case addrCmd.xpt:
+							case addrCmd.none:
+							default:
+								//assume crosspoint connect unless address indicates otherwise
+								this.log('info', `source.gain.ackReset: ${reply}`)
+						}
 						break
 					default:
 						this.log('warn', `Unexpected response from unit: ${reply}`)
+				}
+				break
+			case control.errSyntax:
+				this.log('warn', `Reponse: Syntax Error:  ${reply}`)
+				break
+			case control.invalidParam:
+				switch (tag) {
+					case appTag.alarm:
+						this.log('warn', `alarm.invalidParam: ${reply}`)
+						break
+					case appTag.alive:
+						this.log('warn', `alive.invalidParam: ${reply}`)
+						break
+					case appTag.crosspoint:
+						switch (address) {
+							case addrCmd.delay:
+								this.log('info', `crosspoint.delay.invalidParam: ${reply}`)
+								break
+							case addrCmd.gain:
+								this.log('info', `source.gain.invalidParam: ${reply}`)
+								break
+							case addrCmd.p48:
+								this.log('info', `source.p48.invalidParam: ${reply}`)
+								break
+							case addrCmd.xpt:
+							case addrCmd.none:
+							default:
+								//assume crosspoint connect unless address indicates otherwise
+								this.log('info', `source.gain.invalidParam: ${reply}`)
+						}
+						break
+					default:
+						this.log('warn', `Unexpected response from unit: ${reply}`)
+				}
+				break
+			case control.faultSet:
+				switch (tag) {
+					case appTag.alarm:
+						this.log('warn', `alarm.faultSet: ${reply}`)
+						break
+					case appTag.alive:
+						this.log('warn', `alive.faultSet: ${reply}`)
+						break
+					case appTag.crosspoint:
+						switch (address) {
+							case addrCmd.delay:
+								this.log('info', `crosspoint.delay.faultSet: ${reply}`)
+								break
+							case addrCmd.gain:
+								this.log('info', `source.gain.faultSet: ${reply}`)
+								break
+							case addrCmd.p48:
+								this.log('info', `source.p48.faultSet: ${reply}`)
+								break
+							case addrCmd.xpt:
+							case addrCmd.none:
+							default:
+								//assume crosspoint connect unless address indicates otherwise
+								this.log('info', `source.gain.faultSet: ${reply}`)
+						}
+						break
+					default:
+						this.log('warn', `Unexpected response from unit: ${reply}`)
+				}
+				break
+			case control.faultReset:
+				switch (tag) {
+					case appTag.alarm:
+						this.log('warn', `alarm.faultReset: ${reply}`)
+						break
+					case appTag.alive:
+						this.log('warn', `alive.faultReset: ${reply}`)
+						break
+					case appTag.crosspoint:
+						switch (address) {
+							case addrCmd.delay:
+								this.log('info', `crosspoint.delay.faultReset: ${reply}`)
+								break
+							case addrCmd.gain:
+								this.log('info', `source.gain.faultReset: ${reply}`)
+								break
+							case addrCmd.p48:
+								this.log('info', `source.p48.faultReset: ${reply}`)
+								break
+							case addrCmd.xpt:
+							case addrCmd.none:
+							default:
+								//assume crosspoint connect unless address indicates otherwise
+								this.log('info', `source.gain.faultReset: ${reply}`)
+						}
+						break
+					default:
+						this.log('warn', `Unexpected response from unit: ${reply}`)
+				}
+				break
+			case control.notificationReply:
+				switch (tag) {
+					case appTag.alarm:
+						this.log('debug', `alarm.notificationReply: ${reply}`)
+						break
+					case appTag.alive:
+						this.log('debug', `alive.notificationReply: ${reply}`)
+						break
+					case appTag.crosspoint:
+						switch (address) {
+							case addrCmd.delay:
+								this.log('info', `crosspoint.delay.notificationReply: ${reply}`)
+								break
+							case addrCmd.gain:
+								this.log('info', `source.gain.notificationReply: ${reply}`)
+								break
+							case addrCmd.p48:
+								this.log('info', `source.p48.notificationReply: ${reply}`)
+								break
+							case addrCmd.xpt:
+							case addrCmd.none:
+							default:
+								//assume crosspoint connect unless address indicates otherwise
+								this.log('info', `source.gain.notificationReply: ${reply}`)
+						}
+						break
+					default:
+						this.log('warn', `Unexpected response from unit: ${reply}`)
+				}
+				break
+			case control.notifySet:
+				switch (tag) {
+					case appTag.alarm:
+						this.log('debug', `alarm.notifySet: ${reply}`)
+						break
+					case appTag.alive:
+						this.log('debug', `alive.notifySet: ${reply}`)
+						break
+					case appTag.crosspoint:
+						switch (address) {
+							case addrCmd.delay:
+								this.log('info', `crosspoint.delay.notifySet: ${reply}`)
+								break
+							case addrCmd.gain:
+								this.log('info', `source.gain.notifySet: ${reply}`)
+								break
+							case addrCmd.p48:
+								this.log('info', `source.p48.notifySet: ${reply}`)
+								break
+							case addrCmd.xpt:
+							case addrCmd.none:
+							default:
+								//assume crosspoint connect unless address indicates otherwise
+								this.log('info', `source.gain.notifySet: ${reply}`)
+						}
+						break
+					default:
+						this.log('warn', `Unexpected response from unit: ${reply}`)
+				}
+				break
+			case control.notifyReset:
+				switch (tag) {
+					case appTag.alarm:
+						this.log('info', `alarm.notifyReset: ${reply}`)
+						break
+					case appTag.alive:
+						this.log('info', `alive.notifyReset: ${reply}`)
+						break
+					case appTag.crosspoint:
+						switch (address) {
+							case addrCmd.delay:
+								this.log('info', `crosspoint.delay.notifyReset: ${reply}`)
+								break
+							case addrCmd.gain:
+								this.log('info', `source.gain.notifyReset: ${reply}`)
+								break
+							case addrCmd.p48:
+								this.log('info', `source.p48.notifyReset: ${reply}`)
+								break
+							case addrCmd.xpt:
+							case addrCmd.none:
+							default:
+								//assume crosspoint connect unless address indicates otherwise
+								this.log('info', `source.gain.notifyReset: ${reply}`)
+						}
+						break
+					default:
 				}
 				break
 			default:

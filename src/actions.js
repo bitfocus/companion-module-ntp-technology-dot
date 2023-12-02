@@ -79,6 +79,12 @@ module.exports = function (self) {
 				}
 				cmd += dst + paramSep + nullParam + addrSep + addrCmd.xpt
 				self.addCmdtoQueue(cmd)
+				let src = parseInt(await self.parseVariablesInString(action.options.src))
+				if (isNaN(src) || src > self.config.sources) {
+					self.log('warn', `an invalid src varible has been passed: ${src} `)
+					return undefined
+				}
+				self.addCmdtoQueue(SOM + control.notifySet + appTag.crosspoint + dst + paramSep + src)
 			},
 		},
 	})

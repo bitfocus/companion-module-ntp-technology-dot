@@ -31,8 +31,8 @@ export const control = {
 	reqDlyGet: 'd',
 }
 export const appTag = {
-	alive: 'Z',
 	alarm: 'A',
+	alive: 'Z',
 	crosspoint: 'C',
 }
 export const addrCmd = {
@@ -40,4 +40,5 @@ export const addrCmd = {
 	gain: 'GAIN',
 	p48: 'P48',
 	xpt: 'XPOINT',
+	none: 'NONE',
 }
