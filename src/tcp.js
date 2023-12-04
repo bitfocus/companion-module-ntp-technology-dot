@@ -113,6 +113,7 @@ module.exports = {
 					offset = i + 1
 					this.processCmd(line.toString())
 				}
+				this.receiveBuffer = this.receiveBuffer.substr(offset)
 			})
 		} else {
 			this.updateStatus(InstanceStatus.BadConfig)
