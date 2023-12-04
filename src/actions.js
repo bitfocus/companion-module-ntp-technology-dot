@@ -1,4 +1,3 @@
-//const { Regex } = require('@companion-module/base')
 const { paramSep, addrSep, nullParam, SOM, control, appTag, addrCmd } = require('./consts.js')
 
 module.exports = function (self) {
