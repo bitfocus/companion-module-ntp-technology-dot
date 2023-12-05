@@ -157,10 +157,12 @@ module.exports = {
 								this.log('info', `source.p48.faultSet: ${reply}`)
 								break
 							case addrCmd.xpt:
+								this.log('info', `crosspoint.XPOINT.faultSet: ${reply}`)
+								break
 							case addrCmd.none:
 							default:
 								//assume crosspoint connect unless address indicates otherwise
-								this.log('info', `source.gain.faultSet: ${reply}`)
+								this.log('info', `crosspoint.faultSet: ${reply}`)
 						}
 						break
 					default:
@@ -261,11 +263,27 @@ module.exports = {
 								this.log('info', `source.p48.notifySet: ${reply}`)
 								break
 							case addrCmd.xpt:
+								if (isNaN(src) || isNaN(dst)) {
+									this.log('warn', `unexpected reply: ${reply} src: ${src} dst: ${dst}`)
+									return undefined
+								}
+								this.connections[dst] = src
+								varList[`dst${dst}`] = src
+								this.log('info', `crosspoint.XPOINT.notifySet: ${reply}`)
+								break
 							case addrCmd.none:
 							default:
 								//assume crosspoint connect unless address indicates otherwise
-								this.log('info', `source.gain.notifySet: ${reply}`)
+								if (isNaN(src) || isNaN(dst)) {
+									this.log('warn', `unexpected reply: ${reply} src: ${src} dst: ${dst}`)
+									return undefined
+								}
+								this.connections[dst] = src
+								varList[`dst${dst}`] = src
+								this.log('info', `crosspoint.notifySet: ${reply}`)
 						}
+						this.setVariableValues(varList)
+						this.updateFeedbacks('checkCrosspoint')
 						break
 					default:
 						this.log('warn', `Unexpected response from unit: ${reply}`)

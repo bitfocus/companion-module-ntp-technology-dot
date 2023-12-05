@@ -83,7 +83,6 @@ module.exports = function (self) {
 					self.log('warn', `an invalid src varible has been passed: ${src} `)
 					return undefined
 				}
-				self.addCmdtoQueue(SOM + control.notifySet + appTag.crosspoint + dst + paramSep + src)
 			},
 		},
 		source_gain: {

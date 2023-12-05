@@ -2,7 +2,6 @@ const { Regex } = require('@companion-module/base')
 //const { EndSession, paramSep } = require('./consts.js')
 module.exports = {
 	async configUpdated(config) {
-		//let oldConfig = this.config
 		this.config = config
 		this.useSecondary = false
 		this.initTCP()
@@ -10,6 +9,7 @@ module.exports = {
 		this.updateActions()
 		this.updateFeedbacks()
 		this.updateVariableDefinitions()
+		this.updateVariableValues()
 	},
 	// Return config fields for web config
 	getConfigFields() {
@@ -20,15 +20,18 @@ module.exports = {
 				label: 'Primary Host',
 				width: 8,
 				regex: Regex.HOSTNAME,
+				required: true,
 			},
 			{
-				type: 'textinput',
+				type: 'number',
 				id: 'portPri',
 				label: 'Primary Port',
 				default: 10005,
 				width: 4,
-				regex: Regex.PORT,
+				min: 1,
+				max: 65535,
 				tooltip: 'Default: 10005',
+				required: true,
 			},
 			{
 				type: 'textinput',
@@ -38,12 +41,13 @@ module.exports = {
 				regex: Regex.HOSTNAME,
 			},
 			{
-				type: 'textinput',
+				type: 'number',
 				id: 'portSec',
 				label: 'Secondary Port',
 				default: 10005,
 				width: 4,
-				regex: Regex.PORT,
+				min: 1,
+				max: 65535,
 				tooltip: 'Default: 10005',
 			},
 			{
@@ -55,9 +59,9 @@ module.exports = {
 			},
 			{
 				type: 'number',
-				id: 'sources',
+				id: 'src',
 				label: 'Sources',
-				default: 256,
+				default: 64,
 				width: 4,
 				min: 1,
 				max: 9999,
@@ -66,9 +70,9 @@ module.exports = {
 			},
 			{
 				type: 'number',
-				id: 'destinations',
+				id: 'dst',
 				label: 'Destinations',
-				default: 256,
+				default: 64,
 				width: 4,
 				min: 1,
 				max: 9999,
@@ -81,7 +85,7 @@ module.exports = {
 				label: 'Alarms',
 				default: 24,
 				width: 4,
-				min: 1,
+				min: 0,
 				max: 9999,
 				range: true,
 				step: 1,

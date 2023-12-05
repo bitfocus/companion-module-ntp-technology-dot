@@ -1,6 +1,6 @@
-const { regexpAddr } = require('./consts.js')
+/* const { regexpAddr } = require('./consts.js') */
 module.exports = {
-	regexAddress(addr) {
+	/* 	regexAddress(addr) {
 		let addrress
 		let safeAddress
 		while ((addrress = regexpAddr.exec(addr)) !== null) {
@@ -8,5 +8,5 @@ module.exports = {
 		}
 		safeAddress = safeAddress != undefined ? safeAddress : false
 		return safeAddress
-	},
+	}, */
 }

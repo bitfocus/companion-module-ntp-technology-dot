@@ -14,18 +14,16 @@ class NTP_DOT_PROTOCOL extends InstanceBase {
 	constructor(internal) {
 		super(internal)
 		Object.assign(this, { ...config, ...util, ...tcp, ...processCmd, ...choices })
-		this.keepAliveTimer = {}
-		this.cmdTimer = {}
-		this.cmdQueue = []
-		this.clearToTx = true
 	}
 	async init(config) {
 		this.updateStatus('Starting')
 		this.config = config
+		this.keepAliveTimer = {}
 		this.useSecondary = false
 		this.cmdTimer = setTimeout(() => {
 			this.processCmdQueue()
 		}, msgDelay)
+		this.cmdQueue = []
 		this.initTCP()
 		this.initVariables()
 		this.updateActions() // export actions
@@ -50,7 +48,7 @@ class NTP_DOT_PROTOCOL extends InstanceBase {
 
 	updateVariableValues() {
 		let varList = []
-		for (let i = 0; i <= this.config.destinations; i++) {
+		for (let i = 1; i <= this.config.destinations; i++) {
 			varList[`dst${i}`] = 'unknown'
 		}
 		this.setVariableValues(varList)
@@ -61,10 +59,10 @@ class NTP_DOT_PROTOCOL extends InstanceBase {
 		this.destinations = []
 		this.connections = []
 		this.alarms = []
-		for (let i = 1; i <= this.config.sources; i++) {
+		for (let i = 1; i <= this.config.src; i++) {
 			this.sources.push({ id: i, label: `Source ${i}` })
 		}
-		for (let i = 1; i <= this.config.destinations; i++) {
+		for (let i = 1; i <= this.config.dst; i++) {
 			this.destinations.push({ id: i, label: `Destination ${i}` })
 			this.connections[i] = 0
 		}
