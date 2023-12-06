@@ -91,7 +91,7 @@ module.exports = {
 				}
 			})
 			this.socket.on('connect', () => {
-				if (this.useSecondary) {
+				if (this.useSecondary && this.config.hostSec) {
 					this.log('info', `Connected on Secondary ${this.config.hostSec}`)
 				} else {
 					this.log('info', `Connected on Primary ${this.config.hostPri}`)

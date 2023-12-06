@@ -35,16 +35,24 @@ module.exports = {
 								this.log('info', `crosspoint.delay.ackSet: ${reply}`)
 								break
 							case addrCmd.gain:
-								this.log('info', `source.gain.ackSet: ${reply}`)
+								this.log('info', `crosspoint.gain.ackSet: ${reply}`)
 								break
 							case addrCmd.p48:
-								this.log('info', `source.p48.ackSet: ${reply}`)
+								this.log('info', `crosspoint.p48.ackSet: ${reply}`)
 								break
 							case addrCmd.xpt:
+								this.log('info', `crosspoint.xpoint.ackSet: ${reply}`)
+								if (isNaN(src) || isNaN(dst)) {
+									this.log('warn', `unexpected reply: ${reply} src: ${src} dst: ${dst}`)
+									return undefined
+								}
+								this.connections[dst] = src
+								varList[`dst${dst}`] = src
+								break
 							case addrCmd.none:
 							default:
 								//assume crosspoint connect unless address indicates otherwise
-								this.log('info', `source.gain.ackSet: ${reply}`)
+								this.log('info', `crosspoint.ackSet: ${reply}`)
 								if (isNaN(src) || isNaN(dst)) {
 									this.log('warn', `unexpected reply: ${reply} src: ${src} dst: ${dst}`)
 									return undefined
@@ -53,7 +61,7 @@ module.exports = {
 								varList[`dst${dst}`] = src
 						}
 						this.setVariableValues(varList)
-						this.updateFeedbacks('checkCrosspoint')
+						this.checkFeedbacks('checkCrosspoint')
 						break
 					default:
 						this.log('warn', `Unexpected response from unit: ${reply}`)
@@ -73,16 +81,24 @@ module.exports = {
 								this.log('info', `crosspoint.delay.ackReset: ${reply}`)
 								break
 							case addrCmd.gain:
-								this.log('info', `source.gain.ackReset: ${reply}`)
+								this.log('info', `crosspoint.gain.ackReset: ${reply}`)
 								break
 							case addrCmd.p48:
-								this.log('info', `source.p48.ackReset: ${reply}`)
+								this.log('info', `crosspoint.p48.ackReset: ${reply}`)
 								break
 							case addrCmd.xpt:
+								this.log('info', `crosspoint.xpoint.ackReset: ${reply}`)
+								if (isNaN(src) || isNaN(dst)) {
+									this.log('warn', `unexpected reply: ${reply} src: ${src} dst: ${dst}`)
+									return undefined
+								}
+								this.connections[dst] = src
+								varList[`dst${dst}`] = src
+								break
 							case addrCmd.none:
 							default:
 								//assume crosspoint connect unless address indicates otherwise
-								this.log('info', `source.gain.ackReset: ${reply}`)
+								this.log('info', `crosspoint.ackReset: ${reply}`)
 								if (isNaN(src) || isNaN(dst)) {
 									this.log('warn', `unexpected reply: ${reply} src: ${src} dst: ${dst}`)
 									return undefined
@@ -91,7 +107,7 @@ module.exports = {
 								varList[`dst${dst}`] = src
 						}
 						this.setVariableValues(varList)
-						this.updateFeedbacks('checkCrosspoint')
+						this.checkFeedbacks('checkCrosspoint')
 						break
 					default:
 						this.log('warn', `Unexpected response from unit: ${reply}`)
@@ -114,16 +130,17 @@ module.exports = {
 								this.log('info', `crosspoint.delay.invalidParam: ${reply}`)
 								break
 							case addrCmd.gain:
-								this.log('info', `source.gain.invalidParam: ${reply}`)
+								this.log('info', `crosspoint.gain.invalidParam: ${reply}`)
 								break
 							case addrCmd.p48:
-								this.log('info', `source.p48.invalidParam: ${reply}`)
+								this.log('info', `crosspoint.p48.invalidParam: ${reply}`)
 								break
 							case addrCmd.xpt:
+								this.log('info', `crosspoint.xpoint.invalidParam: ${reply}`)
+								break
 							case addrCmd.none:
 							default:
-								//assume crosspoint connect unless address indicates otherwise
-								this.log('info', `source.gain.invalidParam: ${reply}`)
+								this.log('info', `crosspoint.invalidParam: ${reply}`)
 						}
 						break
 					default:
@@ -140,7 +157,7 @@ module.exports = {
 						} else {
 							this.log('info', `An Alarm has been removed: ${alarmText}`)
 						}
-						this.updateFeedbacks('alarm')
+						this.checkFeedbacks('alarm')
 						break
 					case appTag.alive:
 						this.log('warn', `alive.faultSet: ${reply}`)
@@ -151,17 +168,16 @@ module.exports = {
 								this.log('info', `crosspoint.delay.faultSet: ${reply}`)
 								break
 							case addrCmd.gain:
-								this.log('info', `source.gain.faultSet: ${reply}`)
+								this.log('info', `crosspoint.gain.faultSet: ${reply}`)
 								break
 							case addrCmd.p48:
-								this.log('info', `source.p48.faultSet: ${reply}`)
+								this.log('info', `crosspoint.p48.faultSet: ${reply}`)
 								break
 							case addrCmd.xpt:
 								this.log('info', `crosspoint.XPOINT.faultSet: ${reply}`)
 								break
 							case addrCmd.none:
 							default:
-								//assume crosspoint connect unless address indicates otherwise
 								this.log('info', `crosspoint.faultSet: ${reply}`)
 						}
 						break
@@ -179,7 +195,7 @@ module.exports = {
 						} else {
 							this.log('info', `An Alarm has been removed: ${alarmText}`)
 						}
-						this.updateFeedbacks('alarm')
+						this.checkFeedbacks('alarm')
 						break
 					case appTag.alive:
 						this.log('warn', `alive.faultReset: ${reply}`)
@@ -190,16 +206,17 @@ module.exports = {
 								this.log('info', `crosspoint.delay.faultReset: ${reply}`)
 								break
 							case addrCmd.gain:
-								this.log('info', `source.gain.faultReset: ${reply}`)
+								this.log('info', `crosspoint.gain.faultReset: ${reply}`)
 								break
 							case addrCmd.p48:
-								this.log('info', `source.p48.faultReset: ${reply}`)
+								this.log('info', `crosspoint.p48.faultReset: ${reply}`)
 								break
 							case addrCmd.xpt:
+								this.log('info', `crosspoint.xpoint.faultReset: ${reply}`)
+								break
 							case addrCmd.none:
 							default:
-								//assume crosspoint connect unless address indicates otherwise
-								this.log('info', `source.gain.faultReset: ${reply}`)
+								this.log('info', `crosspoint.faultReset: ${reply}`)
 						}
 						break
 					default:
@@ -220,16 +237,17 @@ module.exports = {
 								this.log('info', `crosspoint.delay.notificationReply: ${reply}`)
 								break
 							case addrCmd.gain:
-								this.log('info', `source.gain.notificationReply: ${reply}`)
+								this.log('info', `crosspoint.gain.notificationReply: ${reply}`)
 								break
 							case addrCmd.p48:
-								this.log('info', `source.p48.notificationReply: ${reply}`)
+								this.log('info', `crosspoint.p48.notificationReply: ${reply}`)
 								break
 							case addrCmd.xpt:
+								this.log('info', `crosspoint.xpoint.notificationReply: ${reply}`)
+								break
 							case addrCmd.none:
 							default:
-								//assume crosspoint connect unless address indicates otherwise
-								this.log('info', `source.gain.notificationReply: ${reply}`)
+								this.log('info', `crosspoint.notificationReply: ${reply}`)
 						}
 						break
 					default:
@@ -246,7 +264,7 @@ module.exports = {
 						} else {
 							this.log('info', `An Alarm has been removed: ${alarmText}`)
 						}
-						this.updateFeedbacks('alarm')
+						this.checkFeedbacks('alarm')
 						break
 					case appTag.alive:
 						this.log('debug', `alive.notifySet: ${reply}`)
@@ -257,10 +275,10 @@ module.exports = {
 								this.log('info', `crosspoint.delay.notifySet: ${reply}`)
 								break
 							case addrCmd.gain:
-								this.log('info', `source.gain.notifySet: ${reply}`)
+								this.log('info', `crosspoint.gain.notifySet: ${reply}`)
 								break
 							case addrCmd.p48:
-								this.log('info', `source.p48.notifySet: ${reply}`)
+								this.log('info', `crosspoint.p48.notifySet: ${reply}`)
 								break
 							case addrCmd.xpt:
 								if (isNaN(src) || isNaN(dst)) {
@@ -283,7 +301,7 @@ module.exports = {
 								this.log('info', `crosspoint.notifySet: ${reply}`)
 						}
 						this.setVariableValues(varList)
-						this.updateFeedbacks('checkCrosspoint')
+						this.checkFeedbacks('checkCrosspoint')
 						break
 					default:
 						this.log('warn', `Unexpected response from unit: ${reply}`)
@@ -303,16 +321,18 @@ module.exports = {
 								this.log('info', `crosspoint.delay.notifyReset: ${reply}`)
 								break
 							case addrCmd.gain:
-								this.log('info', `source.gain.notifyReset: ${reply}`)
+								this.log('info', `crosspoint.gain.notifyReset: ${reply}`)
 								break
 							case addrCmd.p48:
-								this.log('info', `source.p48.notifyReset: ${reply}`)
+								this.log('info', `crosspoint.p48.notifyReset: ${reply}`)
 								break
 							case addrCmd.xpt:
+								this.log('info', `crosspoint.xpoint.notifyReset: ${reply}`)
+								break
 							case addrCmd.none:
 							default:
 								//assume crosspoint connect unless address indicates otherwise
-								this.log('info', `source.gain.notifyReset: ${reply}`)
+								this.log('info', `crosspoint.notifyReset: ${reply}`)
 						}
 						break
 					default:

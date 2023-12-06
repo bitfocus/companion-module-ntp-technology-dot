@@ -28,16 +28,12 @@ module.exports = async function (self) {
 				},
 			],
 			callback: ({ options }) => {
-				if (self.connections[options.dst] == options.src) {
-					return true
-				} else {
-					return false
-				}
+				return self.connections[options.dst] == options.src
 			},
 			subscribe: async ({ options }) => {
 				let cmd = SOM + control.reqInterrogate + appTag.crosspoint + options.dst + paramSep + nullParam
 				self.addCmdtoQueue(cmd)
-				self.addCmdtoQueue(SOM + control.notifySet + appTag.crosspoint + options.dst + paramSep + options.src)
+				//self.addCmdtoQueue(SOM + control.notifySet + appTag.crosspoint + options.dst + paramSep + options.src)
 			},
 		},
 		alarm: {
@@ -61,11 +57,7 @@ module.exports = async function (self) {
 				},
 			],
 			callback: ({ options }) => {
-				if (self.alarms[options.alarm]) {
-					return true
-				} else {
-					return false
-				}
+				return self.alarms[options.alarm]
 			},
 		},
 	})

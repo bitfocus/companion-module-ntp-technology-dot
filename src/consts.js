@@ -4,6 +4,7 @@ export const keepAliveInterval = 60000
 //export const EndSession = 'QUIT' //'EXIT' also works
 export const SOM = '.'
 export const EOM = '\r'
+export const EndSession = 'exit'
 export const nullParam = '-'
 export const paramSep = ',' //seperator between parameters
 export const addrSep = '*' //seperator at start of address
