@@ -25,7 +25,7 @@ The alarms should match the number of configured alarm indexs in your system. Re
 - **Destination - Source** The source routed to a given destination
 
 ## Feedbacks
-- **Alarm** True if the alarm index is asserted
+- **Alarm** True if the alarm index is asserted. Alarm text is written to the log. Warn level when asserted, Info level when removed.
 - **Crosspoint** True if the specified crosspoint is connected
 
 ## Version History
