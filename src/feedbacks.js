@@ -35,6 +35,18 @@ module.exports = async function (self) {
 				self.addCmdtoQueue(cmd)
 				//self.addCmdtoQueue(SOM + control.notifySet + appTag.crosspoint + options.dst + paramSep + options.src)
 			},
+			learn: async (feedback) => {
+				let dst = parseInt(await self.parseVariablesInString(feedback.options.dst))
+				if (isNaN(dst) || dst < 1 || dst > self.config.dst) {
+					self.log('warn', `an invalid varible has been passed: ${dst}`)
+					return undefined
+				}
+				const source = self.connections[dst]
+				return {
+					...feedback.options,
+					src: source,
+				}
+			},
 		},
 		alarm: {
 			name: 'Alarm',
