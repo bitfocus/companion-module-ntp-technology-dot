@@ -38,14 +38,14 @@ module.exports = function (self) {
 			callback: async ({ options }) => {
 				let dst = parseInt(await self.parseVariablesInString(options.dst))
 				let cmd = ''
-				if (isNaN(dst) || dst > self.config.destinations) {
+				if (isNaN(dst) || dst < 1 || dst > self.config.dst) {
 					self.log('warn', `an invalid dst varible has been passed: ${dst}`)
 					return undefined
 				}
 				if (options.method == control.reqSet) {
 					cmd = SOM + control.reqSet + appTag.crosspoint + dst + paramSep
 					let src = parseInt(await self.parseVariablesInString(options.src))
-					if (isNaN(src) || src > self.config.sources) {
+					if (isNaN(src) || src < 0 || src > self.config.src) {
 						self.log('warn', `an invalid src varible has been passed: ${src} `)
 						return undefined
 					}
@@ -59,7 +59,7 @@ module.exports = function (self) {
 			},
 			learn: async (action) => {
 				let dst = parseInt(await self.parseVariablesInString(action.options.dst))
-				if (isNaN(dst) || dst > self.config.destinations) {
+				if (isNaN(dst) || dst < 1 || dst > self.config.dst) {
 					self.log('warn', `an invalid varible has been passed: ${dst}`)
 					return undefined
 				}
@@ -72,14 +72,14 @@ module.exports = function (self) {
 			subscribe: async (action) => {
 				let cmd = SOM + control.reqInterrogate + appTag.crosspoint
 				let dst = parseInt(await self.parseVariablesInString(action.options.dst))
-				if (isNaN(dst) || dst > self.config.destinations) {
+				if (isNaN(dst) || dst < 1 || dst > self.config.dst) {
 					self.log('warn', `an invalid varible has been passed: ${dst}`)
 					return undefined
 				}
 				cmd += dst + paramSep + nullParam + addrSep + addrCmd.xpt
 				self.addCmdtoQueue(cmd)
 				let src = parseInt(await self.parseVariablesInString(action.options.src))
-				if (isNaN(src) || src > self.config.sources) {
+				if (isNaN(src) || src < 0 || src > self.config.src) {
 					self.log('warn', `an invalid src varible has been passed: ${src} `)
 					return undefined
 				}
@@ -113,7 +113,7 @@ module.exports = function (self) {
 			callback: async ({ options }) => {
 				let src = parseInt(await self.parseVariablesInString(options.src))
 				let gain = parseInt(await self.parseVariablesInString(options.gain))
-				if (isNaN(src) || src > self.config.sources || isNaN(gain || gain < 0 || gain > 7)) {
+				if (isNaN(src) || src < 1 || src > self.config.src || isNaN(gain) || gain < 0 || gain > 7) {
 					self.log('warn', `an invalid varible has been passed: src: ${src} gain: ${gain}`)
 					return undefined
 				}
@@ -147,7 +147,7 @@ module.exports = function (self) {
 			],
 			callback: async ({ options }) => {
 				let src = parseInt(await self.parseVariablesInString(options.src))
-				if (isNaN(src) || src > self.config.sources || src < 1) {
+				if (isNaN(src) || src < 1 || src > self.config.src) {
 					self.log('warn', `an invalid varible has been passed: src: ${src}`)
 					return undefined
 				}
@@ -182,7 +182,7 @@ module.exports = function (self) {
 			],
 			callback: async ({ options }) => {
 				let src = parseInt(await self.parseVariablesInString(options.src))
-				if (isNaN(src) || src > self.config.sources || src < 1) {
+				if (isNaN(src) || src < 1 || src > self.config.src) {
 					self.log('warn', `an invalid varible has been passed: src: ${src}`)
 					return undefined
 				}

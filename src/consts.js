@@ -1,7 +1,6 @@
 export const regexpAddr = new RegExp(/^.{0,6}[^.*,`"]$/g)
 export const msgDelay = 50
 export const keepAliveInterval = 60000
-//export const EndSession = 'QUIT' //'EXIT' also works
 export const SOM = '.'
 export const EOM = '\r'
 export const EndSession = 'exit'
