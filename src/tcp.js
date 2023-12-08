@@ -92,9 +92,9 @@ module.exports = {
 			})
 			this.socket.on('connect', () => {
 				if (this.useSecondary && this.config.hostSec) {
-					this.log('info', `Connected on Secondary ${this.config.hostSec}`)
+					this.log('info', `Connected on Secondary ${this.config.hostSec}:${this.config.portSec}`)
 				} else {
-					this.log('info', `Connected on Primary ${this.config.hostPri}`)
+					this.log('info', `Connected on Primary ${this.config.hostPri}:${this.config.portPri}`)
 				}
 				this.clearToTx = true
 				this.queryOnConnect()
