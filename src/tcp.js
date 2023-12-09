@@ -69,9 +69,9 @@ module.exports = {
 			this.socket.destroy()
 			delete this.socket
 		}
-		if (this.config.hostPri) {
+		if (this.config.hostPri && this.config.portPri) {
 			this.log('debug', 'Creating New Socket')
-			if (this.useSecondary && this.config.hostSec) {
+			if (this.useSecondary && this.config.hostSec && this.config.portSec) {
 				this.updateStatus('Connecting to Secondary')
 				this.socket = new TCPHelper(this.config.hostSec, this.config.portSec)
 			} else {

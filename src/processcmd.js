@@ -8,7 +8,7 @@ module.exports = {
 			reply = reply.slice(1)
 		}
 		reply = reply.split(addrSep)
-		let address = reply[1] === undefined ? 'NONE' : reply[1].toString()
+		let address = reply[1] === undefined ? addrCmd.none : reply[1].toString()
 		reply = reply[0]
 		let ctrl = reply[1].toString()
 		let tag = reply[2] === undefined ? '' : reply[2].toString()
@@ -19,7 +19,7 @@ module.exports = {
 		let alarmIndex = dst
 		let alarmState = src
 		let alarmText = params[2] === undefined ? '' : params[2].toString()
-		this.log('debug', `control ${ctrl} tag ${tag} param 1 ${params[0]} param 2 ${params[1]} address ${address}`)
+		//this.log('debug', `control ${ctrl} tag ${tag} param 1 ${params[0]} param 2 ${params[1]} address ${address}`)
 		switch (ctrl) {
 			case control.ackSet:
 				switch (tag) {
