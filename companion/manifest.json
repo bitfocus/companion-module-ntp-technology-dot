@@ -1,12 +1,12 @@
 {
-	"id": "ntp-dot-protocol",
-	"name": "ntp-dot-protocol",
+	"id": "ntp-technology-dot",
+	"name": "ntp-technology-dot",
 	"shortname": "DOT Protocol",
 	"description": "NTP DOT Protocol for control of audio routers with Bitfocus Companion",
 	"version": "1.0.0",
 	"license": "MIT",
-	"repository": "git+https://github.com/phillipivan/companion-module-ntp-dot-protocol.git",
-	"bugs": "https://github.com/phillipivan/companion-module-ntp-dot-protocol/issues",
+	"repository": "git+https://github.com/bitfocus/companion-module-ntp-technology-dot.git",
+	"bugs": "https://github.com/bitfocus/companion-module-ntp-technology-dot/issues",
 	"maintainers": [
 		{
 			"name": "Phillip Ivan Pietruschka",

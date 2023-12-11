@@ -1,5 +1,5 @@
 const { Regex } = require('@companion-module/base')
-//const { EndSession, paramSep } = require('./consts.js')
+
 module.exports = {
 	async configUpdated(config) {
 		this.config = config
@@ -11,6 +11,7 @@ module.exports = {
 		this.updateVariableDefinitions()
 		this.updateVariableValues()
 	},
+
 	// Return config fields for web config
 	getConfigFields() {
 		return [

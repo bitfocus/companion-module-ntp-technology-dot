@@ -1,5 +1,5 @@
 {
-	"name": "ntp-dot-protocol",
+	"name": "ntp-technology-dot",
 	"version": "1.0.0",
 	"main": "src/main.js",
 	"scripts": {
@@ -11,7 +11,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/phillipivan/companion-module-ntp-dot-protocol.git"
+		"url": "git+https://github.com/bitfocus/companion-module-ntp-technology-dot.git"
 	},
 	"dependencies": {
 		"@companion-module/base": "~1.5.1"
