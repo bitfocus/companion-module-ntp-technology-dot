@@ -1,6 +1,6 @@
 {
 	"name": "ntp-technology-dot",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"main": "src/main.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
@@ -14,10 +14,10 @@
 		"url": "git+https://github.com/bitfocus/companion-module-ntp-technology-dot.git"
 	},
 	"dependencies": {
-		"@companion-module/base": "~1.5.1"
+		"@companion-module/base": "~1.7.0"
 	},
 	"devDependencies": {
-		"@companion-module/tools": "^1.4.1"
+		"@companion-module/tools": "^1.4.2"
 	},
 	"prettier": "@companion-module/tools/.prettierrc.json"
 }
