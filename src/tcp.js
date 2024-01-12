@@ -97,6 +97,7 @@ module.exports = {
 					this.log('info', `Connected on Primary ${this.config.hostPri}:${this.config.portPri}`)
 				}
 				this.clearToTx = true
+				this.receiveBuffer = ''
 				this.queryOnConnect()
 				this.keepAliveTimer = setTimeout(() => {
 					this.keepAlive()
