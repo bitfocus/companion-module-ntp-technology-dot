@@ -65,7 +65,7 @@ module.exports = {
 	initTCP() {
 		this.receiveBuffer = ''
 		if (this.socket !== undefined) {
-			this.addCmdtoQueue(EndSession)
+			this.sendCommand(EndSession)
 			this.socket.destroy()
 			delete this.socket
 		}
