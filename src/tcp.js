@@ -2,19 +2,19 @@ const { InstanceStatus, TCPHelper } = require('@companion-module/base')
 const { EndSession, msgDelay, SOM, EOM, keepAliveInterval, control, appTag, paramSep } = require('./consts.js')
 
 module.exports = {
-	async addCmdtoQueue(cmd) {
+	addCmdtoQueue(cmd) {
 		if (cmd !== undefined && cmd.length > 5) {
-			await this.cmdQueue.push(cmd)
+			this.cmdQueue.push(cmd)
 			return true
 		}
 		this.log('warn', `Invalid command: ${cmd}`)
 		return false
 	},
 
-	async processCmdQueue() {
+	processCmdQueue() {
 		if (this.cmdQueue.length > 0 && this.clearToTx) {
 			//dont send command if still waiting for response from last command
-			this.sendCommand(await this.cmdQueue.splice(0, 1))
+			this.sendCommand(this.cmdQueue.splice(0, 1))
 			this.cmdTimer = setTimeout(() => {
 				this.processCmdQueue()
 			}, msgDelay)
@@ -27,7 +27,7 @@ module.exports = {
 		return false
 	},
 
-	async sendCommand(cmd) {
+	sendCommand(cmd) {
 		if (cmd !== undefined) {
 			if (this.socket !== undefined && this.socket.isConnected) {
 				this.log('debug', `Sending Command: ${cmd}`)
@@ -44,7 +44,7 @@ module.exports = {
 	},
 
 	//queries made on initial connection.
-	async queryOnConnect() {
+	queryOnConnect() {
 		//request crosspoint notications
 		this.addCmdtoQueue(SOM + control.reqNotification + appTag.crosspoint + 1 + paramSep + 1)
 		//request alive notifications

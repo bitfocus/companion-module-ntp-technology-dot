@@ -33,7 +33,6 @@ module.exports = async function (self) {
 			subscribe: async ({ options }) => {
 				let cmd = SOM + control.reqInterrogate + appTag.crosspoint + options.dst + paramSep + nullParam
 				self.addCmdtoQueue(cmd)
-				//self.addCmdtoQueue(SOM + control.notifySet + appTag.crosspoint + options.dst + paramSep + options.src)
 			},
 			learn: async (feedback) => {
 				let dst = parseInt(await self.parseVariablesInString(feedback.options.dst))
