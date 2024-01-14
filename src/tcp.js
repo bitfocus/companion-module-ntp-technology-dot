@@ -51,6 +51,8 @@ module.exports = {
 		this.addCmdtoQueue(SOM + control.reqNotification + appTag.alive + 1 + paramSep + 0)
 		//request alarm notifications
 		this.addCmdtoQueue(SOM + control.reqNotification + appTag.alarm + 1 + paramSep + 1)
+		//make sure all feedbacks are accurate
+		this.subscribeFeedbacks()
 		return true
 	},
 

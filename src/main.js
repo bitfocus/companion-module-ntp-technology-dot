@@ -35,10 +35,10 @@ class NTP_DOT_PROTOCOL extends InstanceBase {
 		this.log('debug', `destroy. ID: ${this.id}`)
 		clearTimeout(this.keepAliveTimer)
 		clearTimeout(this.cmdTimer)
-		this.keepAliveTimer = null
-		this.cmdTimer = null
+		delete this.keepAliveTimer
+		delete this.cmdTimer
 		if (this.socket) {
-			await this.sendCommand(EndSession)
+			this.sendCommand(EndSession)
 			this.socket.destroy()
 		} else {
 			this.updateStatus(InstanceStatus.Disconnected)
