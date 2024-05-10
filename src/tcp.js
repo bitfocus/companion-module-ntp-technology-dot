@@ -74,10 +74,10 @@ module.exports = {
 		if (this.config.hostPri && this.config.portPri) {
 			this.log('debug', 'Creating New Socket')
 			if (this.useSecondary && this.config.hostSec && this.config.portSec) {
-				this.updateStatus('Connecting to Secondary')
+				this.updateStatus(InstanceStatus.Connecting, 'Connecting to Secondary')
 				this.socket = new TCPHelper(this.config.hostSec, this.config.portSec)
 			} else {
-				this.updateStatus('Connecting to Primary')
+				this.updateStatus(InstanceStatus.Connecting, 'Connecting to Primary')
 				this.socket = new TCPHelper(this.config.hostPri, this.config.portPri)
 			}
 			this.socket.on('status_change', (status, message) => {
@@ -85,6 +85,7 @@ module.exports = {
 			})
 			this.socket.on('error', (err) => {
 				this.log('error', `Network error: ${err.message}`)
+				this.updateStatus(InstanceStatus.ConnectionFailure, err.message)
 				this.clearToTx = true
 				clearTimeout(this.keepAliveTimer)
 				if (this.config.redundant) {
@@ -95,8 +96,10 @@ module.exports = {
 			this.socket.on('connect', () => {
 				if (this.useSecondary && this.config.hostSec) {
 					this.log('info', `Connected on Secondary ${this.config.hostSec}:${this.config.portSec}`)
+					this.updateStatus(InstanceStatus.Ok, `Connected to Secondary`)
 				} else {
 					this.log('info', `Connected on Primary ${this.config.hostPri}:${this.config.portPri}`)
+					this.updateStatus(InstanceStatus.Ok, `Connected to Primary`)
 				}
 				this.clearToTx = true
 				this.receiveBuffer = ''

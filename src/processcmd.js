@@ -19,7 +19,6 @@ module.exports = {
 		let alarmIndex = dst
 		let alarmState = src
 		let alarmText = params[2] === undefined ? '' : params[2].toString()
-		//this.log('debug', `control ${ctrl} tag ${tag} param 1 ${params[0]} param 2 ${params[1]} address ${address}`)
 		switch (ctrl) {
 			case control.ackSet:
 				switch (tag) {
