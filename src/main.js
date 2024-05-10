@@ -15,8 +15,15 @@ class NTP_DOT_PROTOCOL extends InstanceBase {
 		Object.assign(this, { ...config, ...tcp, ...processCmd, ...choices })
 	}
 	async init(config) {
-		this.updateStatus('Starting')
+		this.updateStatus(InstanceStatus.Connecting)
 		this.config = config
+		if (this.config.redundant) {
+			if (this.config.hostSec == '' || this.config.portSec == '') {
+				this.log('error', 'Secondary host / port not defined')
+				this.updateStatus(InstanceStatus.BadConfig, 'Secondary not defined')
+				return undefined
+			}
+		}
 		this.keepAliveTimer = {}
 		this.useSecondary = false
 		this.cmdTimer = setTimeout(() => {
@@ -33,10 +40,14 @@ class NTP_DOT_PROTOCOL extends InstanceBase {
 	// When module gets deleted
 	async destroy() {
 		this.log('debug', `destroy. ID: ${this.id}`)
-		clearTimeout(this.keepAliveTimer)
-		clearTimeout(this.cmdTimer)
-		delete this.keepAliveTimer
-		delete this.cmdTimer
+		if (this.keepAliveTimer) {
+			clearTimeout(this.keepAliveTimer)
+			delete this.keepAliveTimer
+		}
+		if (this.cmdTimer) {
+			clearTimeout(this.cmdTimer)
+			delete this.cmdTimer
+		}
 		if (this.socket) {
 			this.sendCommand(EndSession)
 			this.socket.destroy()

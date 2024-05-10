@@ -1,8 +1,15 @@
-const { Regex } = require('@companion-module/base')
+const { Regex, InstanceStatus } = require('@companion-module/base')
 
 module.exports = {
 	async configUpdated(config) {
 		this.config = config
+		if (this.config.redundant) {
+			if (this.config.hostSec == '' || this.config.portSec == '') {
+				this.log('error', 'Secondary host / port not defined')
+				this.updateStatus(InstanceStatus.BadConfig, 'Secondary not defined')
+				return undefined
+			}
+		}
 		this.useSecondary = false
 		this.initTCP()
 		this.initVariables()
@@ -19,6 +26,7 @@ module.exports = {
 				type: 'textinput',
 				id: 'hostPri',
 				label: 'Primary Host',
+				default: '',
 				width: 8,
 				regex: Regex.HOSTNAME,
 				required: true,
@@ -38,6 +46,7 @@ module.exports = {
 				type: 'textinput',
 				id: 'hostSec',
 				label: 'Secondary Host',
+				default: '',
 				width: 8,
 				regex: Regex.HOSTNAME,
 			},
