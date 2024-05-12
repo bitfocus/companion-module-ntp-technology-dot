@@ -18,8 +18,8 @@ class NTP_DOT_PROTOCOL extends InstanceBase {
 		this.updateStatus(InstanceStatus.Connecting)
 		this.config = config
 		if (this.config.redundant) {
-			if (this.config.hostSec == '' || this.config.portSec == '') {
-				this.log('error', 'Secondary host / port not defined')
+			if (this.config.hostSec == '') {
+				this.log('error', 'Secondary host not defined')
 				this.updateStatus(InstanceStatus.BadConfig, 'Secondary not defined')
 				return undefined
 			}

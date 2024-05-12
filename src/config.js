@@ -49,6 +49,19 @@ module.exports = {
 				default: '',
 				width: 8,
 				regex: Regex.HOSTNAME,
+				isVisible: (options) => {
+					return options.redundant
+				},
+			},
+			{
+				type: 'static-text',
+				id: 'place-holder-1',
+				label: '',
+				value: '',
+				width: 8,
+				isVisible: (options) => {
+					return !options.redundant
+				},
 			},
 			{
 				type: 'number',
@@ -59,12 +72,25 @@ module.exports = {
 				min: 1,
 				max: 65535,
 				tooltip: 'Default: 10005',
+				isVisible: (options) => {
+					return options.redundant
+				},
+			},
+			{
+				type: 'static-text',
+				id: 'place-holder-2',
+				label: '',
+				value: '',
+				width: 4,
+				isVisible: (options) => {
+					return !options.redundant
+				},
 			},
 			{
 				type: 'checkbox',
 				id: 'redundant',
 				label: 'Redundant Controllers',
-				default: true,
+				default: false,
 				width: 4,
 			},
 			{
