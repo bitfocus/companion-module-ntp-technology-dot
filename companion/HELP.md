@@ -30,6 +30,9 @@ The alarms should match the number of configured alarm indexes in your system. R
 
 ## Version History
 
+### Version 1.0.4
+- Hide redundant config fields when not required
+
 ### Version 1.0.3
 - Better status updates
 - Update dependencies
