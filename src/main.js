@@ -81,6 +81,11 @@ class NTP_DOT_PROTOCOL extends InstanceBase {
 		}
 	}
 
+	// Track whether actions are being recorded
+	handleStartStopRecordActions(isRecording) {
+		this.isRecordingActions = isRecording
+	}
+
 	updateActions() {
 		UpdateActions(this)
 	}
