@@ -287,6 +287,15 @@ module.exports = {
 								this.connections[dst] = src
 								varList[`dst${dst}`] = src
 								this.log('info', `crosspoint.XPOINT.notifySet: ${reply}`)
+								if (this.isRecordingActions) {
+									this.recordAction(
+										{
+											actionId: 'crosspoint',
+											options: { dst: dst, src: src, method: control.reqSet },
+										},
+										`connect ${dst}`
+									)
+								}
 								break
 							case addrCmd.none:
 							default:
@@ -298,6 +307,15 @@ module.exports = {
 								this.connections[dst] = src
 								varList[`dst${dst}`] = src
 								this.log('info', `crosspoint.notifySet: ${reply}`)
+								if (this.isRecordingActions) {
+									this.recordAction(
+										{
+											actionId: 'crosspoint',
+											options: { dst: dst, src: src, method: control.reqSet },
+										},
+										`connect ${dst}`
+									)
+								}
 						}
 						this.setVariableValues(varList)
 						this.checkFeedbacks('checkCrosspoint')
