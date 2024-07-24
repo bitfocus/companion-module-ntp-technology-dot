@@ -7,17 +7,17 @@ export async function processCmd(chunk) {
 		reply = reply.slice(1)
 	}
 	reply = reply.split(addrSep)
-	let address = reply[1] === undefined ? addrCmd.none : reply[1].toString()
+	const address = reply[1] === undefined ? addrCmd.none : reply[1].toString()
 	reply = reply[0]
-	let ctrl = reply[1].toString()
-	let tag = reply[2] === undefined ? '' : reply[2].toString()
+	const ctrl = reply[1].toString()
+	const tag = reply[2] === undefined ? '' : reply[2].toString()
 	let params = reply.slice(3)
 	params = params.split(paramSep)
-	let src = isNaN(parseInt(params[1])) ? null : parseInt(params[1])
-	let dst = isNaN(parseInt(params[0])) ? null : parseInt(params[0])
-	let alarmIndex = dst
-	let alarmState = src
-	let alarmText = params[2] === undefined ? '' : params[2].toString()
+	const src = isNaN(parseInt(params[1])) ? null : parseInt(params[1])
+	const dst = isNaN(parseInt(params[0])) ? null : parseInt(params[0])
+	const alarmIndex = dst
+	const alarmState = src
+	const alarmText = params[2] === undefined ? '' : params[2].toString()
 	switch (ctrl) {
 		case control.ackSet:
 			switch (tag) {

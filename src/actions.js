@@ -1,6 +1,16 @@
 import { paramSep, addrSep, nullParam, SOM, control, appTag, addrCmd } from './consts.js'
 
 export default async function (self) {
+	const optionSrc = {
+		id: 'src',
+		type: 'dropdown',
+		label: 'Source',
+		default: 1,
+		choices: self.sources,
+		useVariables: true,
+		allowCustom: true,
+		tooltip: 'Variable must return an integer src number',
+	}
 	self.setActionDefinitions({
 		crosspoint: {
 			name: 'Crosspoint',
@@ -14,18 +24,9 @@ export default async function (self) {
 					choices: self.destinations,
 					useVariables: true,
 					allowCustom: true,
-					tooltip: 'Varible must return an integer dst number',
+					tooltip: 'Variable must return an integer dst number',
 				},
-				{
-					id: 'src',
-					type: 'dropdown',
-					label: 'Source',
-					default: 1,
-					choices: self.sources,
-					useVariables: true,
-					allowCustom: true,
-					tooltip: 'Varible must return an integer src number',
-				},
+				optionSrc,
 				{
 					id: 'method',
 					type: 'dropdown',
@@ -36,17 +37,17 @@ export default async function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				let dst = parseInt(await self.parseVariablesInString(options.dst))
+				const dst = parseInt(await self.parseVariablesInString(options.dst))
 				let cmd = ''
 				if (isNaN(dst) || dst < 1 || dst > self.config.dst) {
-					self.log('warn', `an invalid dst varible has been passed: ${dst}`)
+					self.log('warn', `an invalid dst variable has been passed: ${dst}`)
 					return undefined
 				}
 				if (options.method == control.reqSet) {
 					cmd = SOM + control.reqSet + appTag.crosspoint + dst + paramSep
 					let src = parseInt(await self.parseVariablesInString(options.src))
 					if (isNaN(src) || src < 0 || src > self.config.src) {
-						self.log('warn', `an invalid src varible has been passed: ${src} `)
+						self.log('warn', `an invalid src variable has been passed: ${src} `)
 						return undefined
 					}
 					cmd += src + addrSep + addrCmd.xpt
@@ -58,9 +59,9 @@ export default async function (self) {
 				self.addCmdtoQueue(cmd)
 			},
 			learn: async (action) => {
-				let dst = parseInt(await self.parseVariablesInString(action.options.dst))
+				const dst = parseInt(await self.parseVariablesInString(action.options.dst))
 				if (isNaN(dst) || dst < 1 || dst > self.config.dst) {
-					self.log('warn', `an invalid varible has been passed: ${dst}`)
+					self.log('warn', `an invalid variable has been passed: ${dst}`)
 					return undefined
 				}
 				const source = self.connections[dst]
@@ -71,34 +72,25 @@ export default async function (self) {
 			},
 			subscribe: async (action) => {
 				let cmd = SOM + control.reqInterrogate + appTag.crosspoint
-				let dst = parseInt(await self.parseVariablesInString(action.options.dst))
+				const dst = parseInt(await self.parseVariablesInString(action.options.dst))
 				if (isNaN(dst) || dst < 1 || dst > self.config.dst) {
-					self.log('warn', `an invalid varible has been passed: ${dst}`)
+					self.log('warn', `an invalid variable has been passed: ${dst}`)
 					return undefined
 				}
 				cmd += dst + paramSep + nullParam + addrSep + addrCmd.xpt
 				self.addCmdtoQueue(cmd)
-				let src = parseInt(await self.parseVariablesInString(action.options.src))
+				/* const src = parseInt(await self.parseVariablesInString(action.options.src))
 				if (isNaN(src) || src < 0 || src > self.config.src) {
-					self.log('warn', `an invalid src varible has been passed: ${src} `)
+					self.log('warn', `an invalid src variable has been passed: ${src} `)
 					return undefined
-				}
+				} */
 			},
 		},
 		source_gain: {
 			name: 'Input - Gain',
 			description: 'Microphone Gain',
 			options: [
-				{
-					id: 'src',
-					type: 'dropdown',
-					label: 'Source',
-					default: 1,
-					choices: self.sources,
-					useVariables: true,
-					allowCustom: true,
-					tooltip: 'Varible must return an integer src number',
-				},
+				optionSrc,
 				{
 					id: 'gain',
 					type: 'dropdown',
@@ -107,17 +99,18 @@ export default async function (self) {
 					choices: self.crosspoint_gain,
 					useVariables: true,
 					allowCustom: true,
-					tooltip: 'Varible must return an integer gain number between 0 and 7',
+					tooltip: 'Variable must return an integer gain number between 0 and 7',
 				},
 			],
 			callback: async ({ options }) => {
-				let src = parseInt(await self.parseVariablesInString(options.src))
-				let gain = parseInt(await self.parseVariablesInString(options.gain))
+				const src = parseInt(await self.parseVariablesInString(options.src))
+				const gain = parseInt(await self.parseVariablesInString(options.gain))
 				if (isNaN(src) || src < 1 || src > self.config.src || isNaN(gain) || gain < 0 || gain > 7) {
-					self.log('warn', `an invalid varible has been passed: src: ${src} gain: ${gain}`)
+					self.log('warn', `an invalid variable has been passed: src: ${src} gain: ${gain}`)
 					return undefined
 				}
-				let cmd = SOM + control.reqGainSet + appTag.crosspoint + src + paramSep + options.gain + addrSep + addrCmd.gain
+				const cmd =
+					SOM + control.reqGainSet + appTag.crosspoint + src + paramSep + options.gain + addrSep + addrCmd.gain
 				self.addCmdtoQueue(cmd)
 			},
 		},
@@ -125,16 +118,7 @@ export default async function (self) {
 			name: 'Input - P48',
 			description: 'Microphone Phantom Power',
 			options: [
-				{
-					id: 'src',
-					type: 'dropdown',
-					label: 'Source',
-					default: 1,
-					choices: self.sources,
-					useVariables: true,
-					allowCustom: true,
-					tooltip: 'Varible must return an integer src number',
-				},
+				optionSrc,
 				{
 					id: 'p48',
 					type: 'dropdown',
@@ -146,12 +130,12 @@ export default async function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				let src = parseInt(await self.parseVariablesInString(options.src))
+				const src = parseInt(await self.parseVariablesInString(options.src))
 				if (isNaN(src) || src < 1 || src > self.config.src) {
-					self.log('warn', `an invalid varible has been passed: src: ${src}`)
+					self.log('warn', `an invalid variable has been passed: src: ${src}`)
 					return undefined
 				}
-				let cmd = SOM + control.reqP48Set + appTag.crosspoint + src + paramSep + options.p48 + addrSep + addrCmd.p48
+				const cmd = SOM + control.reqP48Set + appTag.crosspoint + src + paramSep + options.p48 + addrSep + addrCmd.p48
 				self.addCmdtoQueue(cmd)
 			},
 		},
@@ -159,16 +143,7 @@ export default async function (self) {
 			name: 'Input - Delay',
 			description: 'Input Delay',
 			options: [
-				{
-					id: 'src',
-					type: 'dropdown',
-					label: 'Source',
-					default: 1,
-					choices: self.sources,
-					useVariables: true,
-					allowCustom: true,
-					tooltip: 'Varible must return an integer src number',
-				},
+				optionSrc,
 				{
 					id: 'delay',
 					type: 'number',
@@ -181,12 +156,13 @@ export default async function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				let src = parseInt(await self.parseVariablesInString(options.src))
+				const src = parseInt(await self.parseVariablesInString(options.src))
 				if (isNaN(src) || src < 1 || src > self.config.src) {
-					self.log('warn', `an invalid varible has been passed: src: ${src}`)
+					self.log('warn', `an invalid variable has been passed: src: ${src}`)
 					return undefined
 				}
-				let cmd = SOM + control.reqDlySet + appTag.crosspoint + src + paramSep + options.delay + addrSep + addrCmd.delay
+				const cmd =
+					SOM + control.reqDlySet + appTag.crosspoint + src + paramSep + options.delay + addrSep + addrCmd.delay
 				self.addCmdtoQueue(cmd)
 			},
 		},

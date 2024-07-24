@@ -18,6 +18,8 @@ export default async function (self) {
 					label: 'Destination',
 					default: 1,
 					choices: self.destinations,
+					allowCustom: true,
+					tooltip: 'Variable must return an integer dst number',
 				},
 				{
 					id: 'src',
@@ -25,16 +27,34 @@ export default async function (self) {
 					label: 'Source',
 					default: 1,
 					choices: self.sources,
+					allowCustom: true,
+					tooltip: 'Variable must return an integer src number',
 				},
 			],
-			callback: ({ options }) => {
-				return self.connections[options.dst] == options.src
+			callback: async (feedback, context) => {
+				const src = parseInt(await context.parseVariablesInString(feedback.options.src))
+				const dst = parseInt(await context.parseVariablesInString(feedback.options.dst))
+				if (isNaN(dst) || isNaN(src) || dst < 0 || src < 0 || dst > self.config.dst || src > self.config.src) {
+					self.log('warn', `checkCrosspoint has been passed invalid variables src:${src} dst:${dst}`)
+					return undefined
+				}
+				return self.connections[dst] == src
 			},
-			subscribe: ({ options }) => {
-				self.addCmdtoQueue(SOM + control.reqInterrogate + appTag.crosspoint + options.dst + paramSep + nullParam)
+			subscribe: async (feedback, context) => {
+				const dst = parseInt(await context.parseVariablesInString(feedback.options.dst))
+				if (isNaN(dst) || dst < 0 || dst > self.config.dst) {
+					self.log('warn', `checkCrosspoint:subscribe has been passed invalid variables dst:${dst}`)
+					return undefined
+				}
+				self.addCmdtoQueue(SOM + control.reqInterrogate + appTag.crosspoint + dst + paramSep + nullParam)
 			},
-			learn: (feedback) => {
-				const source = self.connections[feedback.options.dst]
+			learn: async (feedback, context) => {
+				const dst = parseInt(await context.parseVariablesInString(feedback.options.dst))
+				if (isNaN(dst) || dst < 0 || dst > self.config.dst) {
+					self.log('warn', `checkCrosspoint:learn has been passed invalid variables dst:${dst}`)
+					return undefined
+				}
+				const source = self.connections[dst]
 				return {
 					...feedback.options,
 					src: source,
