@@ -1,5 +1,5 @@
-const { control } = require('./consts.js')
-module.exports = {
+import { control } from './consts.js'
+export const choices = {
 	crosspoint_gain: [
 		{ id: 0, label: '0dB' },
 		{ id: 1, label: '10dB' },
