@@ -82,7 +82,7 @@ export default async function (self) {
 				},
 			],
 			callback: ({ options }) => {
-				return self.alarms[options.alarm]
+				return self.alarms[parseInt(options.alarm)]
 			},
 		},
 	})

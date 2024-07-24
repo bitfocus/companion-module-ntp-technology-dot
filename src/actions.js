@@ -38,7 +38,7 @@ export default async function (self) {
 			],
 			callback: async ({ options }) => {
 				const dst = parseInt(await self.parseVariablesInString(options.dst))
-				let cmd = ''
+				let cmd
 				if (isNaN(dst) || dst < 1 || dst > self.config.dst) {
 					self.log('warn', `an invalid dst variable has been passed: ${dst}`)
 					return undefined
@@ -71,19 +71,14 @@ export default async function (self) {
 				}
 			},
 			subscribe: async (action) => {
-				let cmd = SOM + control.reqInterrogate + appTag.crosspoint
 				const dst = parseInt(await self.parseVariablesInString(action.options.dst))
 				if (isNaN(dst) || dst < 1 || dst > self.config.dst) {
 					self.log('warn', `an invalid variable has been passed: ${dst}`)
 					return undefined
 				}
-				cmd += dst + paramSep + nullParam + addrSep + addrCmd.xpt
+				const cmd =
+					SOM + control.reqInterrogate + appTag.crosspoint + dst + paramSep + nullParam + addrSep + addrCmd.xpt
 				self.addCmdtoQueue(cmd)
-				/* const src = parseInt(await self.parseVariablesInString(action.options.src))
-				if (isNaN(src) || src < 0 || src > self.config.src) {
-					self.log('warn', `an invalid src variable has been passed: ${src} `)
-					return undefined
-				} */
 			},
 		},
 		source_gain: {

@@ -26,7 +26,7 @@ export function processCmdQueue() {
 	return false
 }
 
-export function sendCommand(cmd) {
+export async function sendCommand(cmd) {
 	if (cmd !== undefined) {
 		if (this.socket !== undefined && this.socket.isConnected) {
 			this.log('debug', `Sending Command: ${cmd}`)
@@ -63,12 +63,11 @@ export function keepAlive() {
 	}, keepAliveInterval)
 }
 
-export function initTCP() {
+export async function initTCP() {
 	this.receiveBuffer = ''
 	if (this.socket !== undefined) {
-		this.sendCommand(EndSession)
+		await this.sendCommand(EndSession)
 		this.socket.destroy()
-		delete this.socket
 	}
 	if (this.config.hostPri && this.config.portPri) {
 		this.log('debug', 'Creating New Socket')

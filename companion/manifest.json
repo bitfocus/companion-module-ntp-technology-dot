@@ -3,7 +3,7 @@
 	"name": "ntp-technology-dot",
 	"shortname": "DOT Protocol",
 	"description": "NTP DOT Protocol for control of audio routers with Bitfocus Companion",
-	"version": "1.0.2",
+	"version": "0.0.0",
 	"license": "MIT",
 	"repository": "git+https://github.com/bitfocus/companion-module-ntp-technology-dot.git",
 	"bugs": "https://github.com/bitfocus/companion-module-ntp-technology-dot/issues",
@@ -17,7 +17,7 @@
 		"type": "node18",
 		"api": "nodejs-ipc",
 		"apiVersion": "0.0.0",
-		"entrypoint": "../main.js"
+		"entrypoint": "../src/main.js"
 	},
 	"legacyIds": [],
 	"manufacturer": "NTP Technology",

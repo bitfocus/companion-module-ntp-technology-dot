@@ -49,8 +49,9 @@ class NTP_DOT_PROTOCOL extends InstanceBase {
 			delete this.cmdTimer
 		}
 		if (this.socket) {
-			this.sendCommand(EndSession)
+			await this.sendCommand(EndSession)
 			this.socket.destroy()
+			delete this.socket
 		} else {
 			this.updateStatus(InstanceStatus.Disconnected)
 		}
