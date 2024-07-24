@@ -1,7 +1,7 @@
-const { combineRgb } = require('@companion-module/base')
-const { paramSep, nullParam, SOM, control, appTag } = require('./consts.js')
+import { combineRgb } from '@companion-module/base'
+import { paramSep, nullParam, SOM, control, appTag } from './consts.js'
 
-module.exports = async function (self) {
+export default async function (self) {
 	self.setFeedbackDefinitions({
 		checkCrosspoint: {
 			name: 'Crosspoint',

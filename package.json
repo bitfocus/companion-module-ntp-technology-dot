@@ -2,6 +2,7 @@
 	"name": "ntp-technology-dot",
 	"version": "1.1.0",
 	"main": "src/main.js",
+	"type": "module",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"format": "prettier --write",

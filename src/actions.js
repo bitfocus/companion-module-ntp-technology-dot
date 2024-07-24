@@ -1,6 +1,6 @@
-const { paramSep, addrSep, nullParam, SOM, control, appTag, addrCmd } = require('./consts.js')
+import { paramSep, addrSep, nullParam, SOM, control, appTag, addrCmd } from './consts.js'
 
-module.exports = function (self) {
+export default async function (self) {
 	self.setActionDefinitions({
 		crosspoint: {
 			name: 'Crosspoint',
