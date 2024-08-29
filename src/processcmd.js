@@ -292,7 +292,7 @@ export async function processCmd(chunk) {
 										actionId: 'crosspoint',
 										options: { dst: dst, src: src, method: control.reqSet },
 									},
-									`connect ${dst}`
+									`connect ${dst}`,
 								)
 							}
 							break
@@ -312,7 +312,7 @@ export async function processCmd(chunk) {
 										actionId: 'crosspoint',
 										options: { dst: dst, src: src, method: control.reqSet },
 									},
-									`connect ${dst}`
+									`connect ${dst}`,
 								)
 							}
 					}
