@@ -37,6 +37,11 @@ The Action Recorder will translate any connection messages into new connect acti
 
 ## Version History
 
+### Version 1.2.1
+
+- Debounce command queue
+- Update dependencies
+
 ### Version 1.2.0
 
 - Add variable support for crosspoint feedback

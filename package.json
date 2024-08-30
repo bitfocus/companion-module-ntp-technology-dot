@@ -1,13 +1,12 @@
 {
 	"name": "ntp-technology-dot",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"main": "src/main.js",
 	"type": "module",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"format": "prettier -w .",
-		"lint:raw": "eslint --ext .ts --ext .js --ignore-pattern dist --ignore-pattern pkg",
-		"lint": "yarn lint:raw ."
+		"package": "companion-module-build"
 	},
 	"license": "MIT",
 	"repository": {

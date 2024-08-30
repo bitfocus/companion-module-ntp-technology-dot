@@ -3,8 +3,14 @@ import { EndSession, msgDelay, SOM, EOM, keepAliveInterval, control, appTag, par
 
 export function addCmdtoQueue(cmd) {
 	if (cmd !== undefined && cmd.length > 5) {
-		this.cmdQueue.push(cmd)
-		return true
+		if (this.cmdQueue.includes(cmd) === false) {
+			this.cmdQueue.push(cmd)
+			return true
+		} else {
+			this.log('debug', `${cmd} already in queue, discarding`)
+			return false
+		}
+		
 	}
 	this.log('warn', `Invalid command: ${cmd}`)
 	return false
