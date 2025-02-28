@@ -1,12 +1,14 @@
 {
 	"name": "ntp-technology-dot",
-	"version": "1.2.1",
+	"version": "1.2.2",
 	"main": "src/main.js",
 	"type": "module",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"format": "prettier -w .",
-		"package": "companion-module-build"
+		"format": "prettier --write",
+		"lint:raw": "eslint",
+		"lint": "yarn lint:raw .",
+		"package": "yarn companion-module-build"
 	},
 	"license": "MIT",
 	"repository": {
@@ -14,11 +16,16 @@
 		"url": "git+https://github.com/bitfocus/companion-module-ntp-technology-dot.git"
 	},
 	"dependencies": {
-		"@companion-module/base": "~1.10.0"
+		"@companion-module/base": "~1.11.3"
 	},
 	"devDependencies": {
-		"@companion-module/tools": "^2.0.0",
-		"prettier": "^3.3.3"
+		"@companion-module/tools": "^2.1.1",
+		"eslint": "~9.21.0",
+		"prettier": "^3.5.2"
 	},
-	"prettier": "@companion-module/tools/.prettierrc.json"
+	"engines": {
+		"node": "^22.13"
+	},
+	"prettier": "@companion-module/tools/.prettierrc.json",
+	"packageManager": "yarn@4.6.0"
 }
