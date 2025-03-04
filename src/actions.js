@@ -36,8 +36,8 @@ export default async function (self) {
 					allowCustom: false,
 				},
 			],
-			callback: async ({ options }) => {
-				const dst = parseInt(await self.parseVariablesInString(options.dst))
+			callback: async ({ options }, context) => {
+				const dst = parseInt(await context.parseVariablesInString(options.dst))
 				let cmd
 				if (isNaN(dst) || dst < 1 || dst > self.config.dst) {
 					self.log('warn', `an invalid dst variable has been passed: ${dst}`)
@@ -45,7 +45,7 @@ export default async function (self) {
 				}
 				if (options.method == control.reqSet) {
 					cmd = SOM + control.reqSet + appTag.crosspoint + dst + paramSep
-					let src = parseInt(await self.parseVariablesInString(options.src))
+					let src = parseInt(await context.parseVariablesInString(options.src))
 					if (isNaN(src) || src < 0 || src > self.config.src) {
 						self.log('warn', `an invalid src variable has been passed: ${src} `)
 						return undefined
@@ -58,8 +58,8 @@ export default async function (self) {
 				}
 				self.addCmdtoQueue(cmd)
 			},
-			learn: async (action) => {
-				const dst = parseInt(await self.parseVariablesInString(action.options.dst))
+			learn: async (action, context) => {
+				const dst = parseInt(await context.parseVariablesInString(action.options.dst))
 				if (isNaN(dst) || dst < 1 || dst > self.config.dst) {
 					self.log('warn', `an invalid variable has been passed: ${dst}`)
 					return undefined
@@ -70,8 +70,8 @@ export default async function (self) {
 					src: source,
 				}
 			},
-			subscribe: async (action) => {
-				const dst = parseInt(await self.parseVariablesInString(action.options.dst))
+			subscribe: async (action, context) => {
+				const dst = parseInt(await context.parseVariablesInString(action.options.dst))
 				if (isNaN(dst) || dst < 1 || dst > self.config.dst) {
 					self.log('warn', `an invalid variable has been passed: ${dst}`)
 					return undefined
@@ -97,9 +97,9 @@ export default async function (self) {
 					tooltip: 'Variable must return an integer gain number between 0 and 7',
 				},
 			],
-			callback: async ({ options }) => {
-				const src = parseInt(await self.parseVariablesInString(options.src))
-				const gain = parseInt(await self.parseVariablesInString(options.gain))
+			callback: async ({ options }, context) => {
+				const src = parseInt(await context.parseVariablesInString(options.src))
+				const gain = parseInt(await context.parseVariablesInString(options.gain))
 				if (isNaN(src) || src < 1 || src > self.config.src || isNaN(gain) || gain < 0 || gain > 7) {
 					self.log('warn', `an invalid variable has been passed: src: ${src} gain: ${gain}`)
 					return undefined
@@ -124,8 +124,8 @@ export default async function (self) {
 					allowCustom: false,
 				},
 			],
-			callback: async ({ options }) => {
-				const src = parseInt(await self.parseVariablesInString(options.src))
+			callback: async ({ options }, context) => {
+				const src = parseInt(await context.parseVariablesInString(options.src))
 				if (isNaN(src) || src < 1 || src > self.config.src) {
 					self.log('warn', `an invalid variable has been passed: src: ${src}`)
 					return undefined
@@ -150,8 +150,8 @@ export default async function (self) {
 					step: 1,
 				},
 			],
-			callback: async ({ options }) => {
-				const src = parseInt(await self.parseVariablesInString(options.src))
+			callback: async ({ options }, context) => {
+				const src = parseInt(await context.parseVariablesInString(options.src))
 				if (isNaN(src) || src < 1 || src > self.config.src) {
 					self.log('warn', `an invalid variable has been passed: src: ${src}`)
 					return undefined

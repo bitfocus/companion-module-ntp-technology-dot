@@ -10,7 +10,6 @@ export function addCmdtoQueue(cmd) {
 			this.log('debug', `${cmd} already in queue, discarding`)
 			return false
 		}
-		
 	}
 	this.log('warn', `Invalid command: ${cmd}`)
 	return false
